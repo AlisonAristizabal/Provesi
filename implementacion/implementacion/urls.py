@@ -18,9 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
 from bodegaje.views import RetiroView
+from django.http import HttpResponse
+
+def health(_): return HttpResponse("ok")
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/admin/', permanent=False)),  
     path('admin/', admin.site.urls),
     path('api/retiros/', RetiroView.as_view()),
+    path("health-check/", health)
 ]
