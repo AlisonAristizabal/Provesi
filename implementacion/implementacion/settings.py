@@ -23,7 +23,7 @@ environ.Env.read_env(BASE_DIR / ".env")
 # --------------------------------------------------------------------------------------
 SECRET_KEY = env("SECRET_KEY", default="dev-only")  # define SECRET_KEY en .env en prod
 DEBUG = env.bool("DEBUG", default=True)
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
+ALLOWED_HOSTS = ["*"]
 
 # --------------------------------------------------------------------------------------
 # Apps
