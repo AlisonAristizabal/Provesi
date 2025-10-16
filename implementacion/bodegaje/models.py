@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 class Bodega(models.Model):
     codigo = models.CharField(max_length=30, unique=True)
@@ -37,7 +38,10 @@ class MovimientoInventario(models.Model):
     lote = models.CharField(max_length=40, blank=True)
     cantidad = models.IntegerField()
     motivo = models.CharField(max_length=160)
-    actor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    actor = models.ForeignKey(get_user_model(),
+        null=True, blank=True,                # <— permite anónimo
+        on_delete=models.SET_NULL,
+        related_name="movimientos")
     creado_en = models.DateTimeField(auto_now_add=True)
 
 class EventoOutbox(models.Model):

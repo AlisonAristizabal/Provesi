@@ -8,6 +8,8 @@ def retirar_producto(*, usuario, producto, ubicacion, lote, cantidad, motivo="re
     """
     Descuenta stock de forma atómica, registra el movimiento y deja un evento en outbox.
     """
+    actor = usuario if getattr(usuario, "is_authenticated", False) else None
+
     inv = (Inventario.objects
            .select_for_update()
            .get(producto=producto, ubicacion=ubicacion, lote=lote))
@@ -19,8 +21,12 @@ def retirar_producto(*, usuario, producto, ubicacion, lote, cantidad, motivo="re
 
     mov = MovimientoInventario.objects.create(
         tipo=MovimientoInventario.RETIRO,
-        producto=producto, ubicacion=ubicacion, lote=lote,
-        cantidad=cantidad, motivo=motivo, actor=usuario
+        producto=producto,
+        ubicacion=ubicacion,
+        lote=lote,
+        cantidad=cantidad,
+        motivo=motivo,
+        actor=actor,       # <— puede ser None
     )
 
     EventoOutbox.objects.create(

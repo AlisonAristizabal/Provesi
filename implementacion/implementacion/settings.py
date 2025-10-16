@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 
     # Local apps
     "bodegaje",
-    "pedidos",
+    "pedidos.apps.PedidosConfig",
     "reportes",
     "integraciones",
     "usuarios",
@@ -89,6 +89,13 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "provesi-cache",
+        "TIMEOUT": 10,  # TTL corto para no servir datos viejos
+    }
+}
 
 # --------------------------------------------------------------------------------------
 # Channels / ASGI (WebSockets)
@@ -113,18 +120,7 @@ CELERY_TASK_ALWAYS_EAGER = env.bool("CELERY_TASK_ALWAYS_EAGER", default=False)  
 # --------------------------------------------------------------------------------------
 # DRF (API)
 # --------------------------------------------------------------------------------------
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.BasicAuthentication",
-        # Agrega JWT si lo usarás (djangorestframework-simplejwt)
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 50,
-}
+REST_FRAMEWORK = { "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"] }
 
 # --------------------------------------------------------------------------------------
 # Password validation
