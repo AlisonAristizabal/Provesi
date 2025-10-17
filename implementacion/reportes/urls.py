@@ -1,9 +1,9 @@
 # reportes/urls.py
 from django.urls import path
-from .views import ResumenUbicacionesView, PedidosPendientesView
+from .views import ResumenEstadosView, PedidosPendientesPorEstadoView
 
 urlpatterns = [
-    path("resumen-ubicaciones/", ResumenUbicacionesView.as_view()),
-    path("pedidos-pendientes/", PedidosPendientesView.as_view()),
+    path("resumen-estados/", ResumenEstadosView.as_view()),
+    path("pendientes/<str:estado>/", PedidosPendientesPorEstadoView.as_view()),
 ]
 
